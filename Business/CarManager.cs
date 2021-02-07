@@ -1,7 +1,10 @@
 ﻿using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business
@@ -25,14 +28,27 @@ namespace Business
             _iCarDal.Delete(car);
         }
 
-        public List<Car> GetAll()
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            using (ReCapDatabaseContext context = new ReCapDatabaseContext())
+            {
+                return context.Set<Car>().SingleOrDefault(filter);
+            }
+        }
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
             return _iCarDal.GetAll();
         }
 
-        public List<Car> GetById(Car car)
+        public List<Car> GetCarsByBrandId(int id)
         {
-            return _iCarDal.GetById(car);
+            return _iCarDal.GetAll(c => c.BrandId == id);
+        }
+
+        public List<Car> GetCarsByColorId(int id)
+        {
+            return _iCarDal.GetAll(c => c.ColorId == id);
         }
 
         public void Update(Car car)
