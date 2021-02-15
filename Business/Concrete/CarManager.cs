@@ -1,13 +1,14 @@
 ﻿using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Business
+namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
@@ -18,14 +19,14 @@ namespace Business
             _iCarDal = iCarDal;
         }
 
-        public void Add(Car car)
+        public void Add(Car entity)
         {
-            _iCarDal.Add(car);
+            _iCarDal.Add(entity);
         }
 
-        public void Delete(Car car)
+        public void Delete(Car entity)
         {
-            _iCarDal.Delete(car);
+            _iCarDal.Delete(entity);
         }
 
         public Car Get(Expression<Func<Car, bool>> filter)
@@ -41,19 +42,30 @@ namespace Business
             return _iCarDal.GetAll();
         }
 
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _iCarDal.GetCarDetails();
+        }
+
         public List<Car> GetCarsByBrandId(int id)
         {
-            return _iCarDal.GetAll(c => c.BrandId == id);
+            using (ReCapDatabaseContext context = new ReCapDatabaseContext())
+            {
+                return _iCarDal.GetAll(c => c.BrandId == id);
+            }
         }
 
         public List<Car> GetCarsByColorId(int id)
         {
-            return _iCarDal.GetAll(c => c.ColorId == id);
+            using (ReCapDatabaseContext context = new ReCapDatabaseContext())
+            {
+                return _iCarDal.GetAll(c => c.ColorId == id);
+            }
         }
 
-        public void Update(Car car)
+        public void Update(Car entity)
         {
-            _iCarDal.Update(car);
+            _iCarDal.Update(entity);
         }
     }
 }

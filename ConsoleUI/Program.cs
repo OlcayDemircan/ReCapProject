@@ -1,10 +1,13 @@
 ﻿using Business;
+using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+
 
 namespace ConsoleUI
 {
@@ -12,59 +15,98 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            ICarDal efCarDal = new EfCarDal();
-            ICarService carManager = new CarManager(efCarDal);
+            EfBrandDal efBrandDal = new EfBrandDal();
+            BrandManager brandManager = new BrandManager(efBrandDal);
 
-            Car car1 = new Car() { Id = 1, BrandId = 1, ColorId = 1, ModelYear = 2013, DailyPrice = 400, Description = "Fiat 500L" };
-            Car car2 = new Car() { Id = 2, BrandId = 2, ColorId = 2, ModelYear = 2013, DailyPrice = 350, Description = "Opel Corsa" };
-            Car car3 = new Car() { Id = 3, BrandId = 3, ColorId = 1, ModelYear = 2007, DailyPrice = 200, Description = "Renault Megane" };
-            Car car4 = new Car() { Id = 4, BrandId = 4, ColorId = 3, ModelYear = 2019, DailyPrice = 900, Description = "Peugeot 3008" };
-            Car car5 = new Car() { Id = 5, BrandId = 2, ColorId = 1, ModelYear = 2018, DailyPrice = 700, Description = "Opel Insignia" };
-            Car car6 = new Car() { Id = 6, BrandId = 1, ColorId = 2, ModelYear = 2020, DailyPrice = 500, Description = "Fiat Egea" };
-            //DatabaseFill(carManager, car1, car2, car3, car4, car5, car6);
-            Console.WriteLine("---------------Tüm Kayıtlar-----------------------------");
+            EfCarDal efCarDal = new EfCarDal();
+            CarManager carManager = new CarManager(efCarDal);
+
+            EfColorDal efColorDal = new EfColorDal();
+            ColorManager colorManager = new ColorManager(efColorDal);
+
+            //Car GetAll Test
+            //CarGetAll(carManager);
+
+            //Car GetCarsByBrandId Test
+            //CarGetCarsByBrandId(carManager);
+
+            Brand brand1 = new Brand();
+            Brand brand2 = new Brand();
+            Brand brand3 = new Brand();
+            Brand brand4 = new Brand();
+            brand1.Id = 1; brand1.BrandName = "Fiat";
+            brand2.Id = 2; brand2.BrandName = "Opel";
+            brand3.Id = 3; brand3.BrandName = "Renault";
+            brand4.Id = 4; brand4.BrandName = "Peugeot";
+
+
+            //Brand Insert
+            //BrandInsert(brandManager, brand1, brand2, brand3, brand4);
+
+            Color color1 = new Color();
+            Color color2 = new Color();
+            Color color3 = new Color();
+            Color color4 = new Color();
+            color1.Id = 1; color1.ColorName = "Siyah";
+            color2.Id = 2; color2.ColorName = "Beyaz";
+            color3.Id = 3; color3.ColorName = "Kırmızı";
+
+            //Color Insert
+            //ColorInsert(colorManager, color1, color2, color3);
+
+            //List Cars with properties from different tables
+            //ListCarsDueToDetails(carManager);
+
+        }
+
+        private static void ListCarsDueToDetails(CarManager carManager)
+        {
+            foreach (var car in carManager.GetCarDetails())
+            {
+                Console.WriteLine("CarName : " + car.Description + " | BrandName : " + car.BrandName + " | ColorName : " + car.ColorName +
+                                    " | DailyPrice : " + car.DailyPrice);
+            }
+        }
+
+        private static void ColorInsert(ColorManager colorManager, Color color1, Color color2, Color color3)
+        {
+            Color[] colors = new Color[] { color1, color2, color3 };
+
+            foreach (var color in colors)
+            {
+                colorManager.Add(color);
+            }
+        }
+
+        private static void BrandInsert(BrandManager brandManager, Brand brand1, Brand brand2, Brand brand3, Brand brand4)
+        {
+            Brand[] brands = new Brand[] { brand1, brand2, brand3, brand4 };
+
+            foreach (var brand in brands)
+            {
+                brandManager.Add(brand);
+            }
+        }
+
+        private static void CarGetCarsByBrandId(CarManager carManager)
+        {
+            int id = 1; //Id filtresinin girişi
+
+            foreach (var car in carManager.GetCarsByBrandId(id))
+            {
+                Console.WriteLine("CarId : " + car.Id + " | BrandId : " + car.BrandId + " | ColorId : " + car.ColorId +
+                                    " | ModelYear : " + car.ModelYear + " | Description : " + car.Description + " | DailyPrice : " + car.DailyPrice);
+            }
+        }
+
+        private static void CarGetAll(CarManager carManager)
+        {
             foreach (var car in carManager.GetAll())
             {
-                Console.WriteLine(car.Description);
-            }
-
-            Console.WriteLine("---------------Brand ID'ye göre Filtreleme-----------------------------");
-
-            foreach (var car in carManager.GetCarsByBrandId(1))
-            {
-                Console.WriteLine(car.Description);
-            }
-
-            Console.WriteLine("----------------Color ID'ye göre Filtreleme----------------------");
-
-            foreach (var car in carManager.GetCarsByColorId(2))
-            {
-                Console.WriteLine(car.Description);
-            }
-
-            Console.WriteLine(@"----------------Yeni Giriş Denemesi (Hatalı\ DailyPrice > 0 Hatası)----------------------");
-
-            carManager.Add(new Car() { Id = 7, BrandId = 3, ColorId = 3, ModelYear = 2014, DailyPrice = 0, Description = "Renault Clio" });
-
-            Console.WriteLine(@"----------------Yeni Giriş Denemesi (Hatalı\ Description en az 2 karater olmalı Hatası)----------------------");
-
-            carManager.Add(new Car() { Id = 7, BrandId = 3, ColorId = 3, ModelYear = 2014, DailyPrice = 400, Description = "R" });
-
-        }
-
-        private static void DatabaseFill(ICarService carManager, Car car1, Car car2, Car car3, Car car4, Car car5, Car car6)
-        {
-            Console.WriteLine("----------------------------------------------------------------------------------------");
-            Console.WriteLine("Tüm araçların veritabanına kaydedilmesi");
-
-            List<Car> cars = new List<Car> { car1, car2, car3, car4, car5, car6 };
-            int i = 1;
-            foreach (var car in cars)
-            {
-                Console.WriteLine(i + ". araç kaydı yapıldı" + car.Description);
-                carManager.Add(car);
-                i = i + 1;
+                Console.WriteLine("CarId : " + car.Id + " | BrandId : " + car.BrandId + " | ColorId : " + car.ColorId +
+                                    " | ModelYear : " + car.ModelYear + " | Description : " + car.Description + " | DailyPrice : " + car.DailyPrice);
             }
         }
+
     }
 }
