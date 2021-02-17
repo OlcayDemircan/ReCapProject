@@ -34,15 +34,13 @@ namespace ConsoleUI
             Brand brand2 = new Brand();
             Brand brand3 = new Brand();
             Brand brand4 = new Brand();
+            Brand brand5 = new Brand();
             brand1.Id = 1; brand1.BrandName = "Fiat";
             brand2.Id = 2; brand2.BrandName = "Opel";
             brand3.Id = 3; brand3.BrandName = "Renault";
             brand4.Id = 4; brand4.BrandName = "Peugeot";
-
-
-            //Brand Insert
-            //BrandInsert(brandManager, brand1, brand2, brand3, brand4);
-
+            
+                        
             Color color1 = new Color();
             Color color2 = new Color();
             Color color3 = new Color();
@@ -57,16 +55,18 @@ namespace ConsoleUI
             //List Cars with properties from different tables
             //ListCarsDueToDetails(carManager);
 
+            
+
         }
 
-        private static void ListCarsDueToDetails(CarManager carManager)
-        {
-            foreach (var car in carManager.GetCarDetails())
-            {
-                Console.WriteLine("CarName : " + car.Description + " | BrandName : " + car.BrandName + " | ColorName : " + car.ColorName +
-                                    " | DailyPrice : " + car.DailyPrice);
-            }
-        }
+        //private static void ListCarsDueToDetails(CarManager carManager)
+        //{
+        //    foreach (var car in carManager.GetCarDetails)
+        //    {
+        //        Console.WriteLine("CarName : " + car.Description + " | BrandName : " + car.BrandName + " | ColorName : " + car.ColorName +
+        //                            " | DailyPrice : " + car.DailyPrice);
+        //    }
+        //}
 
         private static void ColorInsert(ColorManager colorManager, Color color1, Color color2, Color color3)
         {
@@ -78,35 +78,27 @@ namespace ConsoleUI
             }
         }
 
-        private static void BrandInsert(BrandManager brandManager, Brand brand1, Brand brand2, Brand brand3, Brand brand4)
-        {
-            Brand[] brands = new Brand[] { brand1, brand2, brand3, brand4 };
+       
 
-            foreach (var brand in brands)
-            {
-                brandManager.Add(brand);
-            }
-        }
+        //private static void CarGetCarsByBrandId(CarManager carManager)
+        //{
+        //    int id = 1; //Id filtresinin girişi
 
-        private static void CarGetCarsByBrandId(CarManager carManager)
-        {
-            int id = 1; //Id filtresinin girişi
+        //    foreach (var car in carManager.GetCarsByBrandId(id))
+        //    {
+        //        Console.WriteLine("CarId : " + car.Id + " | BrandId : " + car.BrandId + " | ColorId : " + car.ColorId +
+        //                            " | ModelYear : " + car.ModelYear + " | Description : " + car.Description + " | DailyPrice : " + car.DailyPrice);
+        //    }
+        //}
 
-            foreach (var car in carManager.GetCarsByBrandId(id))
-            {
-                Console.WriteLine("CarId : " + car.Id + " | BrandId : " + car.BrandId + " | ColorId : " + car.ColorId +
-                                    " | ModelYear : " + car.ModelYear + " | Description : " + car.Description + " | DailyPrice : " + car.DailyPrice);
-            }
-        }
-
-        private static void CarGetAll(CarManager carManager)
-        {
-            foreach (var car in carManager.GetAll())
-            {
-                Console.WriteLine("CarId : " + car.Id + " | BrandId : " + car.BrandId + " | ColorId : " + car.ColorId +
-                                    " | ModelYear : " + car.ModelYear + " | Description : " + car.Description + " | DailyPrice : " + car.DailyPrice);
-            }
-        }
+        //private static void CarGetAll(CarManager carManager)
+        //{
+        //    foreach (var car in carManager.GetAll())
+        //    {
+        //        Console.WriteLine("CarId : " + car.Id + " | BrandId : " + car.BrandId + " | ColorId : " + car.ColorId +
+        //                            " | ModelYear : " + car.ModelYear + " | Description : " + car.Description + " | DailyPrice : " + car.DailyPrice);
+        //    }
+        //}
 
     }
 }

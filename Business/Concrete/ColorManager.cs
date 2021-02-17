@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constant;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -19,32 +21,42 @@ namespace Business.Concrete
             _iColorDal = iColorDal;
         }
 
-        public void Add(Color entity)
+        public IResult Add(Color entity)
         {
             _iColorDal.Add(entity);
+            
+            return new SuccessResult(Messages.Added);
         }
 
-        public void Delete(Color entity)
+        public IResult Delete(Color entity)
         {
             _iColorDal.Delete(entity);
+
+            return new SuccessResult(Messages.Deleted);
         }
 
-        public Color Get(Expression<Func<Color, bool>> filter)
+        public IDataResult<Color> Get(Expression<Func<Color, bool>> filter)
         {
             using (ReCapDatabaseContext context = new ReCapDatabaseContext())
             {
-                return context.Set<Color>().SingleOrDefault(filter);
+                return new SuccessDataResult<Color>(context.Set<Color>().SingleOrDefault(filter));
             }
         }
 
-        public List<Color> GetAll(Expression<Func<Color, bool>> filter = null)
+        public IDataResult<List<Color>> GetAll(Expression<Func<Color, bool>> filter = null)
         {
-            return _iColorDal.GetAll();
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Color>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Color>>(_iColorDal.GetAll(), Messages.Listed);
         }
 
-        public void Update(Color entity)
+        public IResult Update(Color entity)
         {
             _iColorDal.Update(entity);
+
+            return new SuccessResult(Messages.Updated);
         }
     }
 }

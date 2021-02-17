@@ -1,7 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Constant;
 using Core.DataAccess;
 using Core.DataAccess.EntityFramework;
 using Core.Entities;
+using Core.Utilities.Results;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,43 +13,52 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class EntityManagerBase<TEntity, TContex, TEntityDal> : IServiceRepository<TEntity>
+    public class EntityManagerBase<TEntity,TContext> : IServiceRepository<TEntity>
         where TEntity : class, IEntity, new()
-        where TContex : DbContext, new()
-        where TEntityDal : class, IEntityRepository<TEntity>, new()
+        where TContext : DbContext, new()
+        //where TEntityDal : class, IEntityRepository<TEntity>, new()
     {
-        EfEntityRepositoryBase<TEntity,TContex> _efEntityRepositoryBase;
+        IEntityRepository<TEntity> _iEntityRepository;
 
-        public EntityManagerBase(EfEntityRepositoryBase<TEntity, TContex> efEntityRepositoryBase)
+        public EntityManagerBase(IEntityRepository<TEntity> iEntityRepository)
         {
-            _efEntityRepositoryBase = efEntityRepositoryBase;
+            _iEntityRepository = iEntityRepository;
         }
 
-        public void Add(TEntity entity)
-        {
-            _efEntityRepositoryBase.Add(entity);
+
+        public IResult Add(TEntity entity)
+        {            
+            _iEntityRepository.Add(entity);
+            return new SuccessResult(Messages.Added);
         }
 
-        public void Delete(TEntity entity)
+        public IResult Delete(TEntity entity)
         {
-            _efEntityRepositoryBase.Delete(entity);
+            _iEntityRepository.Delete(entity);
+            return new SuccessResult(Messages.Deleted);
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
-        {
-            using (TContex context = new TContex())
+        public IDataResult<TEntity> Get(Expression<Func<TEntity, bool>> filter)
+        {            
+            using (TContext context = new TContext())
             {
-                return context.Set<TEntity>().SingleOrDefault(filter);
+                return new SuccessDataResult<TEntity>(context.Set<TEntity>().SingleOrDefault(filter));
             }
         }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
+        public IDataResult<List<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            return _efEntityRepositoryBase.GetAll();
-        }        
-        public void Update(TEntity car)
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<TEntity>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<TEntity>>(_iEntityRepository.GetAll(), Messages.Listed);
+        }
+
+        public IResult Update(TEntity entity)
         {
-            _efEntityRepositoryBase.Update(car);
+            _iEntityRepository.Update(entity);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }

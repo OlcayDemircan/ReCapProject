@@ -1,4 +1,6 @@
-﻿using DataAccess.Abstract;
+﻿using Business.Constant;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
 using Entities.DTOs;
@@ -19,53 +21,60 @@ namespace Business.Concrete
             _iCarDal = iCarDal;
         }
 
-        public void Add(Car entity)
+        public IResult Add(Car entity)
         {
             _iCarDal.Add(entity);
+            return new SuccessResult(Messages.Added);
         }
 
-        public void Delete(Car entity)
+        public IResult Delete(Car entity)
         {
             _iCarDal.Delete(entity);
+            return new SuccessResult(Messages.Deleted);
         }
 
-        public Car Get(Expression<Func<Car, bool>> filter)
+        public IDataResult<Car> Get(Expression<Func<Car, bool>> filter)
         {
             using (ReCapDatabaseContext context = new ReCapDatabaseContext())
             {
-                return context.Set<Car>().SingleOrDefault(filter);
+                return new SuccessDataResult<Car>(context.Set<Car>().SingleOrDefault(filter));
             }
         }
 
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        public IDataResult<List<Car>> GetAll(Expression<Func<Car, bool>> filter = null)
         {
-            return _iCarDal.GetAll();
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(),Messages.Listed);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _iCarDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails());
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
             using (ReCapDatabaseContext context = new ReCapDatabaseContext())
             {
-                return _iCarDal.GetAll(c => c.BrandId == id);
+                return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(c => c.BrandId == id));
             }
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
             using (ReCapDatabaseContext context = new ReCapDatabaseContext())
             {
-                return _iCarDal.GetAll(c => c.ColorId == id);
+                return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(c => c.ColorId == id));
             }
         }
 
-        public void Update(Car entity)
+        public IResult Update(Car entity)
         {
             _iCarDal.Update(entity);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }
