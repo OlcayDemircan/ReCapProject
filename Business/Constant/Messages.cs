@@ -20,8 +20,10 @@ namespace Business.Constant
         public static string BrandNameInvalid = "Marka ismi geçersiz";
         
         //Color nesnesi ile ilgili mesajar        
-        public static string ColorNameInvalid = "Renk ismi geçersiz";      
+        public static string ColorNameInvalid = "Renk ismi geçersiz";
 
-      
+        //Rental nesnesi ile ilgili mesajar 
+        public static string RentalValid = "Araç kiralandı";
+        public static string RentalInvalid = "Araç kiralanamaz çünkü şu anda kiralık durumda";
     }
 }

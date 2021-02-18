@@ -21,15 +21,15 @@ namespace Business.Concrete
             _iCarDal = iCarDal;
         }
 
-        public IResult Add(Car entity)
+        public IResult Add(Car car)
         {
-            _iCarDal.Add(entity);
+            _iCarDal.Add(car);
             return new SuccessResult(Messages.Added);
         }
 
-        public IResult Delete(Car entity)
+        public IResult Delete(Car car)
         {
-            _iCarDal.Delete(entity);
+            _iCarDal.Delete(car);
             return new SuccessResult(Messages.Deleted);
         }
 
@@ -41,13 +41,13 @@ namespace Business.Concrete
             }
         }
 
-        public IDataResult<List<Car>> GetAll(Expression<Func<Car, bool>> filter = null)
+        public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour == 22)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
-            return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(),Messages.Listed);
+            return new SuccessDataResult<List<Car>>(_iCarDal.GetAll(), Messages.Listed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -71,9 +71,9 @@ namespace Business.Concrete
             }
         }
 
-        public IResult Update(Car entity)
+        public IResult Update(Car car)
         {
-            _iCarDal.Update(entity);
+            _iCarDal.Update(car);
             return new SuccessResult(Messages.Updated);
         }
     }

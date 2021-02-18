@@ -24,7 +24,7 @@ namespace Business.Concrete
         public IResult Add(Color entity)
         {
             _iColorDal.Add(entity);
-            
+
             return new SuccessResult(Messages.Added);
         }
 
@@ -43,7 +43,7 @@ namespace Business.Concrete
             }
         }
 
-        public IDataResult<List<Color>> GetAll(Expression<Func<Color, bool>> filter = null)
+        public IDataResult<List<Color>> GetAll()
         {
             if (DateTime.Now.Hour == 22)
             {
