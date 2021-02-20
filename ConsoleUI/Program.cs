@@ -18,7 +18,7 @@ namespace ConsoleUI
             EfBrandDal efBrandDal = new EfBrandDal();
             BrandManager brandManager = new BrandManager(efBrandDal);
 
-            iCarDal efCarDal = new iCarDal();
+            EfCarDal efCarDal = new EfCarDal();
             CarManager carManager = new CarManager(efCarDal);
 
             EfColorDal efColorDal = new EfColorDal();
