@@ -7,8 +7,8 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    interface IBrandService
-    {
+    public interface IBrandService
+    {       
         IDataResult<List<Brand>> GetAll();
         IDataResult<Brand> Get(Expression<Func<Brand, bool>> filter);
         IResult Add(Brand brand);

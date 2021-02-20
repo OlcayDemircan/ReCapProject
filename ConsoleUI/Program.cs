@@ -7,7 +7,7 @@ using Entities;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace ConsoleUI
 {
@@ -18,7 +18,7 @@ namespace ConsoleUI
             EfBrandDal efBrandDal = new EfBrandDal();
             BrandManager brandManager = new BrandManager(efBrandDal);
 
-            EfCarDal efCarDal = new EfCarDal();
+            iCarDal efCarDal = new iCarDal();
             CarManager carManager = new CarManager(efCarDal);
 
             EfColorDal efColorDal = new EfColorDal();
@@ -37,9 +37,11 @@ namespace ConsoleUI
             Rental rental3 = new Rental(); rental3.CarId = 1; rental3.CustomerId = 1;
             rental3.RentDate = new DateTime(2021, 2, 17);
 
-            rentalManager.Add(rental1); // İlk kiralamanın tabloya eklenmesi. Dönüş tarihi verilmiştir.
-            rentalManager.Add(rental2); // İkinci kiralamanın tabloya eklenmesi. Dönüş tarihi bilinmiyor.
-            rentalManager.Add(rental2); // Üçüncü kiralamanın tabloya eklenmesi. Araç dönüş tarihi boş olmadığı için başarısızlıkla sonuçlanır.
+            //rentalManager.Add(rental1); // İlk kiralamanın tabloya eklenmesi. Dönüş tarihi verilmiştir.
+            //rentalManager.Add(rental2); // İkinci kiralamanın tabloya eklenmesi. Dönüş tarihi bilinmiyor.
+            //rentalManager.Add(rental2); // Üçüncü kiralamanın tabloya eklenmesi. Araç dönüş tarihi boş olmadığı için başarısızlıkla sonuçlanır.
+                                    
+            
 
 
 
@@ -73,7 +75,7 @@ namespace ConsoleUI
 
         }
 
-       
+
 
     }
 }
