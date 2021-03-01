@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constant
@@ -12,6 +13,7 @@ namespace Business.Constant
         public static string Updated = "Güncelleme işlemi başarılı.";
         public static string MaintenanceTime = "Sistem bakımdadır.";
         public static string Listed = "Listeleme işlemi başarılı.";
+        internal static string AuthorizationDenied = "Yetkiniz yok";
 
         //Car nesnesi ile ilgili mesajlar
         public static string CarNameInvalid = "Araç ismi geçersiz";
@@ -25,5 +27,9 @@ namespace Business.Constant
         //Rental nesnesi ile ilgili mesajar 
         public static string RentalValid = "Araç kiralandı";
         public static string RentalInvalid = "Araç kiralanamaz çünkü şu anda kiralık durumda";
+
+        //CarImage nesnesi ile ilgili mesajar 
+        internal static string CarHasAlreadyFiveImages = "Bu otomobil için zaten 5 adet resim yüklenmiş durumdadır";
+        internal static string CarImageAdded = "Araba resmi eklendi";
     }
 }
