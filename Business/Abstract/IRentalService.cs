@@ -1,6 +1,7 @@
 ﻿using Core.Utilities.Results;
 using Entities;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -15,5 +16,6 @@ namespace Business.Abstract
         IResult Add(Rental rental);
         IResult Update(Rental rental);
         IResult Delete(Rental rental);
+        IDataResult<List<RentalDetailDto>> GetRentalDetails();
     }
 }

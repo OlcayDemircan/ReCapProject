@@ -6,6 +6,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,13 +56,17 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            if (DateTime.Now.Hour == 22)
+            if (DateTime.Now.Hour == 4)
             {
                 return new ErrorDataResult<List<Rental>>(Messages.MaintenanceTime);
             }
             return new SuccessDataResult<List<Rental>>(_iRentalDal.GetAll(), Messages.Listed);
         }
 
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_iRentalDal.GetRentalDetails());
+        }
 
         public IResult Update(Rental rental)
         {
